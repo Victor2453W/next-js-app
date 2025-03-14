@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import postgres from 'postgres';
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
@@ -102,6 +102,10 @@ async function seedRevenue() {
 }
 
 export async function GET() {
+  if (process.env.NODE_ENV !== 'development') {
+    return Response.json({ message: 'Not allowed' }, { status: 403 });
+  }
+
   try {
     const result = await sql.begin((sql) => [
       seedUsers(),
