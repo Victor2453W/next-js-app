@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import CardWrapper from '@/app/ui/dashboard/cards';
 import RevenueChart from '@/app/ui/dashboard/revenue-chart';
 import LatestInvoices from '@/app/ui/dashboard/latest-invoices';
@@ -13,6 +14,18 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
     title: 'Home',
 };
+=======
+import CardWrapper from "@/app/ui/dashboard/cards";
+import RevenueChart from "@/app/ui/dashboard/revenue-chart";
+import LatestInvoices from "@/app/ui/dashboard/latest-invoices";
+import { lusitana } from "@/app/ui/fonts";
+import { Suspense } from "react";
+import { 
+  RevenueChartSkeleton, 
+  LatestInvoicesSkeleton,
+  CardsSkeleton,
+} from "@/app/ui/skeletons";
+>>>>>>> 3b16c22c1970504f867e1d53774646c3c1f2bfdd
 
 export default async function Page() {
   return (
@@ -35,4 +48,8 @@ export default async function Page() {
       </div>
     </main>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 3b16c22c1970504f867e1d53774646c3c1f2bfdd

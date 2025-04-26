@@ -4,7 +4,11 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
+<<<<<<< HEAD
 import { usePathname, useSearchParams } from 'next/navigation';
+=======
+import { usePathname, useSearchParams} from 'next/navigation';
+>>>>>>> 3b16c22c1970504f867e1d53774646c3c1f2bfdd
 
 export default function Pagination({ totalPages }: { totalPages: number }) {
   const pathname = usePathname();
