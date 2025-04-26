@@ -13,11 +13,7 @@
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
-<<<<<<< HEAD
-    "next": "15.3.0-canary.24",
-=======
     "next": "15.3.0-canary.23",
->>>>>>> 3b16c22c1970504f867e1d53774646c3c1f2bfdd
     "next-auth": "5.0.0-beta.25",
     "pg": "^8.14.0",
     "postcss": "8.5.1",

@@ -1,11 +1,11 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> 3b16c22c1970504f867e1d53774646c3c1f2bfdd
+    // eslint: {
+    //     // Warning: This allows production builds to successfully complete even if
+    //     // your project has ESLint errors.
+    //     ignoreDuringBuilds: true,
+    // },
 };
 
 export default nextConfig;
