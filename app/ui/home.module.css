@@ -1,7 +1,19 @@
 .shape {
-    height: 0;
-    width: 0;
-    border-bottom: 30px solid black;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-  }
+  height: 0;
+  width: 0;
+  border-bottom: 30px solid black;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+}
+ /* home.module.css */
+/* 
+.logo {
+  width: 32px;
+  height: 36px;
+  background:
+    linear-gradient(to top, #16a34a 20px, transparent 0) 0 100%,
+    linear-gradient(to top, #16a34a 28px, transparent 0) 12px 100%,
+    linear-gradient(to top, #16a34a 36px, transparent 0) 24px 100%;
+  background-size: 8px 100%;
+  background-repeat: no-repeat;
+} */

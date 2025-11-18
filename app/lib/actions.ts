@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import bcryptjs from 'bcryptjs';
 import postgres from 'postgres'
 
 import { signIn } from '@/auth';
@@ -22,6 +23,12 @@ const FormSchema = z.object({
         invalid_type_error: 'Please select an invoice status.',
     }),
     date: z.string(), 
+});
+
+const RegisterFormSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 });
 
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
@@ -117,13 +124,96 @@ export async function authenticate(
         await signIn('credentials', formData);
     } catch (error) {
         if (error instanceof AuthError) {
-        switch (error.type) {
-            case 'CredentialsSignin':
-            return 'Invalid credentials.';
-            default:
-            return 'Something went wrong.';
-        }
+            switch (error.type) {
+                case 'CredentialsSignin':
+                return 'Invalid credentials.';
+                default:
+                return 'Something went wrong.';
+            }
         }
         throw error;
     }
 }
+
+
+export async function register(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  const validatedFields = RegisterFormSchema.safeParse({
+    name: formData.get('name'),
+    email: formData.get('email'),
+    password: formData.get('password'),
+  });
+
+  if (!validatedFields.success) {
+    return 'Missing Fields. Failed to Register.';
+  }
+
+  const { name, email, password } = validatedFields.data;
+
+  try {
+    // Check if user already exists
+    const existingUser = await sql`
+      SELECT id FROM users WHERE email = ${email}
+    `;
+
+    if (existingUser.length > 0) {
+      return 'User with this email already exists.';
+    }
+
+    // Hash the password
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    // Insert new user
+    await sql`
+      INSERT INTO users (name, email, password)
+      VALUES (${name}, ${email}, ${hashedPassword})
+    `;
+
+  } catch (error) {
+    console.error('Registration Error:', error);
+    return 'Database Error: Failed to register.';
+  }
+
+  // Redirect to login page after successful registration
+  redirect('/login');
+}
+
+// export async function register(
+//   prevState: string | undefined,
+//   formData: FormData
+// ): Promise<string | null> {
+//   const validated = RegisterFormSchema.safeParse({
+//     name:     formData.get('name') as string,
+//     email:    formData.get('email') as string,
+//     password: formData.get('password') as string
+//   });
+
+//   if (!validated.success) {
+//     const firstError = Object.values(validated.error.flatten().fieldErrors)[0]?.[0];
+//     return firstError || 'Invalid form data.';
+//   }
+
+//   const { name, email, password } = validated.data;
+
+//   const hashedPassword = await bcryptjs.hash(password, 12);
+
+//   try {
+//     await sql`
+//       INSERT INTO users (name, email, password)
+//       VALUES (${name}, ${email}, ${hashedPassword})
+//     `;
+//   } catch (err: any) {
+//     if (err.code === '23505') {
+//       return 'Email is already taken.';
+//     }
+//     console.error(err);
+//     return 'Database error while creating user.';
+//   }
+
+//   revalidatePath('/dashboard');
+//   redirect('/dashboard');
+
+//   return null;
+// }
